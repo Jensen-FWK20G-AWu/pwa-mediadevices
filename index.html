@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>PWA demo: Camera</title>
+	<script src="md-script.js" defer></script>
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+	<h1> Photo booth </h1>
+
+	<button id="turnOnCameraButton"> Turn camera on </button>
+	<button id="takePictureButton" disabled> Take picture </button>
+
+	<video id="cameraVideo"></video>
+
+	<p>
+		<img id="takenPicture" alt="Taken picture" />
+	</p>
+	<p id="status"></p>
+</body>
+</html>
