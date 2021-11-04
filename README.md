@@ -1,2 +1,4 @@
-# pwa-mediadevices
-PWA MediaDevices, kamera och mikrofon
+# PWA: MediaDevices
+
+Webbapp som använder datorns eller mobilens kamera.
+
