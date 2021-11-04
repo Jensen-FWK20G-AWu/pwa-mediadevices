@@ -11,9 +11,16 @@
 <body>
 	<h1> Photo booth </h1>
 
-	<button id="turnOnCameraButton"> Turn camera on </button>
-	<button id="turnOffCameraButton" disabled> Turn camera off </button>
-	<button id="takePictureButton" disabled> Take picture </button>
+	<div>
+		<button id="turnOnCameraButton"> Turn camera on </button>
+		<button id="turnOffCameraButton" disabled> Turn camera off </button>
+		<button id="cameraFacingButton"> Camera facing </button>
+		<button id="takePictureButton" disabled> Take picture </button>
+		<button id="startRecordingButton"> Start recording </button>
+		<button id="stopRecordingButton"> Stop recording </button>
+	</div>
+
+	<p id="downloadPara"> </p>
 
 	<video id="cameraVideo"></video>
 

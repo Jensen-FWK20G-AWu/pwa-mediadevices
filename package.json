@@ -1,0 +1,23 @@
+{
+  "name": "pwa-mediadevices",
+  "version": "1.0.0",
+  "description": "Webbapp som använder datorns eller mobilens kamera.",
+  "main": "md-script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jensen-FWK20G-AWu/pwa-mediadevices.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Jensen-FWK20G-AWu/pwa-mediadevices/issues"
+  },
+  "homepage": "https://github.com/Jensen-FWK20G-AWu/pwa-mediadevices#readme",
+  "dependencies": {
+    "surge": "^0.23.0"
+  }
+}

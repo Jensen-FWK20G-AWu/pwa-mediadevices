@@ -1,20 +1,74 @@
 const turnOnCameraButton = document.querySelector('#turnOnCameraButton')
 const turnOffCameraButton = document.querySelector('#turnOffCameraButton')
 const takePictureButton = document.querySelector('#takePictureButton')
+const cameraFacingButton = document.querySelector('#cameraFacingButton')
+const startRecordingButton = document.querySelector('#startRecordingButton')
+const stopRecordingButton = document.querySelector('#stopRecordingButton')
 const statusBar = document.querySelector('#status')
 const takenPicture = document.querySelector('#takenPicture')
 const videoElement = document.querySelector('#cameraVideo')
+const downloadPara = document.querySelector('#downloadPara')
 
 // Kontrollera först om webbläsaren över huvud taget kan använda MediaDevices. Alla större webbläsare kan det - men ha som vana att alltid kontrollera. Andra Web API som vi kan vilja använda har sämre stöd. PS. om du inte ser slutet på den här raden utan att scrolla, behöver du slå på WORD WRAP i editorn: https://github.com/lejonmanen/git-instruktion/blob/main/vscode-settings.md#vs-code-rekommenderade-inst%C3%A4llningar
 if( 'mediaDevices' in navigator ) {
 	turnOnCameraButton.addEventListener('click', turnCameraOn)
 	turnOffCameraButton.addEventListener('click', turnCameraOff)
 	takePictureButton.addEventListener('click', takePicture)
+	cameraFacingButton.addEventListener('click', changeFacing)
+	startRecordingButton.addEventListener('click', startRecording)
+	stopRecordingButton.addEventListener('click', stopRecording)
 }
 // TODO: else-fallet, visa lämpligt felmeddelande för användaren
 
 // Globala variabler, nödvändiga eftersom videoströmmen används i flera funktioner.
 let videoStream = null;
+let facing = 'user';
+let recorder = null
+let chunks = null
+
+function startRecording() {
+	if( !videoStream )
+		return;
+	
+	recorder = new MediaRecorder(videoStream)
+	chunks = []
+
+	recorder.addEventListener('dataavailable', event => {
+		if( event.data.size > 0 ) {
+			chunks.push(event.data)  // varje chunk är en Blob
+		}
+	})
+
+	recorder.addEventListener('stop', () => {
+		const masterBlob = new Blob(chunks, { type: 'video/webm' })
+		const url = URL.createObjectURL(masterBlob)
+	
+		const a = document.createElement('a')
+		a.innerHTML = 'Click to download recording.'
+		a.href = url
+		a.download = 'awesome-movie.webm'
+		downloadPara.appendChild(a)
+	
+		// Om vi vill ta bort länken efter att man har klickat på den:
+		/* a.addEventListener('click', () => {
+			downloadPara.innerHTML = ''
+		}) */
+	})
+
+	recorder.start()
+}
+
+function stopRecording() {
+	recorder.stop()
+}
+
+function changeFacing() {
+	if( facing === 'user' ) {
+		facing = 'environment'
+	} else {
+		facing = 'user'
+	}
+}
 
 function turnCameraOff() {
 	// Om det inte finns någon videoström, finns det inget att stänga av; dvs. vi är redan klara.
@@ -34,7 +88,8 @@ function turnCameraOff() {
 async function turnCameraOn() {
 	// Ange önskade dimensioner på videoströmmen. När vi tar stillbilder kommer samma dimensioner användas.
 	const constraints = {
-		video: { width: 320, height: 240 }
+		video: { width: 320, height: 240, facingMode: facing },
+		audio: false   // ändra till TRUE om du vill aktivera mikrofon
 	}
 	const md = navigator.mediaDevices
 	// console.log('About to ask for video');
